@@ -22,7 +22,7 @@ const NotificationCard = ({ text }: NotificationCardProps) => (
         >
             <i className="fas fa-exclamation-circle" />
         </IconWrapper>
-        <Span fontSize="14px" fontSizeSm="13px" fontWeight="400">
+        <Span fontSize="14px" fontSizeSm="12px" fontWeight="400">
             {text}
         </Span>
     </FlexWrapper>

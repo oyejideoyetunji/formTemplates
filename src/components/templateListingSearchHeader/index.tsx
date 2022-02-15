@@ -1,16 +1,16 @@
-import { FlexWrapper, IconWrapper } from "../../components/wrappers";
+import { FlexWrapper, IconWrapper } from "../wrappers";
 import { setAlphabeticOrderSortKey } from "../../store/slices/templateAlphabeticOrderSort";
 import { setDateSortKey } from "../../store/slices/templatesDateSort";
 import { setTemplatesCategory } from "../../store/slices/templatesCategory";
 import { setTemplatesSearchValue } from "../../store/slices/templateSearch";
 import { SortKey, TemplateCategory } from "../../lib/types";
 import { sortOptions, templatesCategoryOptions } from "../../static/options";
-import { Span } from "../../components/typography";
+import { Span } from "../typography";
 import { useAppDispatch, useAppSelector } from "../../store";
 import Colors from "../../lib/colors";
-import Input from "../../components/input";
+import Input from "../input";
 import React, { ChangeEvent } from "react";
-import Select from "../../components/select";
+import Select from "../select";
 import styled from "styled-components";
 
 const SearchBlockWrapper = styled(FlexWrapper)`
@@ -92,7 +92,6 @@ const TemplateListingSearchHeader = () => {
                             <IconWrapper
                                 fontWeight="300" fontSize="15px"
                                 color={Colors.GreyText}
-                                cursor="pointer"
                             >
                                 <i className="fas fa-search" />
                             </IconWrapper>
@@ -101,7 +100,6 @@ const TemplateListingSearchHeader = () => {
                     childNodeWidth="30px"
                     childNodeTop="9px"
                     childNodeRight="8px"
-
                 />
             </FlexWrapper>
             <SortKeysWrapper Py="24px" align="center">

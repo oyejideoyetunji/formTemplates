@@ -13,7 +13,7 @@ import Pagination from "../../components/pagination";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import TemplateListingGrid from "../../components/templateListingGrid";
-import TemplateListingSearchHeader from "../../components/templateListingSearchBlock";
+import TemplateListingSearchHeader from "../../components/templateListingSearchHeader";
 
 export const ScreenWraper = styled.main`
     width: 100%;

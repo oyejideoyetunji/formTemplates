@@ -6,6 +6,7 @@ import TemplateCard from "../templateCard";
 
 const Grid = styled.section`
     width: 100%;
+    margin: 18px 0;
     padding: 18px 0;
     display: grid;
     gap: 1.5rem;

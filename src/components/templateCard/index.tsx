@@ -20,7 +20,7 @@ export const CardWrapper = styled.div`
 `;
 
 const CardHeader = styled(H2)`
-    text-transform:capitalize;
+    text-transform: capitalize;
 `;
 
 interface TemplateCardProps {
