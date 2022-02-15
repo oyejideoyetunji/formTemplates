@@ -1,5 +1,12 @@
 import { FlexWrapper, IconWrapper } from "../../components/wrappers";
+import { setAlphabeticOrderSortKey } from "../../store/slices/templateAlphabeticOrderSort";
+import { setDateSortKey } from "../../store/slices/templatesDateSort";
+import { setTemplatesCategory } from "../../store/slices/templatesCategory";
+import { setTemplatesSearchValue } from "../../store/slices/templateSearch";
+import { SortKey, TemplateCategory } from "../../lib/types";
+import { sortOptions, templatesCategoryOptions } from "../../static/options";
 import { Span } from "../../components/typography";
+import { useAppDispatch, useAppSelector } from "../../store";
 import Colors from "../../lib/colors";
 import Input from "../../components/input";
 import React, { ChangeEvent } from "react";
@@ -47,15 +54,28 @@ const SortKeysWrapper = styled(FlexWrapper)`
     }
 `;
 
-interface TemplateListingSearchHeaderProps {
-    onTemplateCategoryChange(event: ChangeEvent<HTMLSelectElement>): void
-}
+const TemplateListingSearchHeader = () => {
+    const dispatch = useAppDispatch()
 
-const TemplateListingSearchHeader = (
-    props: TemplateListingSearchHeaderProps,
-) => {
+    const {
+        templatesCategory: { category: templateCategory },
+        templateSearch: { searchValue },
+        templatesDateSort: { key: dateSortKey },
+        templateAlphabeticOrderSort: { key: nameSortKey },
+    } = useAppSelector(state => state)
 
-    const noop = () => { null }
+    const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+        dispatch(setTemplatesSearchValue(event.target.value))
+    }
+    const onCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setTemplatesCategory(event.target.value as TemplateCategory))
+    }
+    const onNameSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setAlphabeticOrderSortKey(event.target.value as SortKey))
+    }
+    const onDateSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setDateSortKey(event.target.value as SortKey))
+    }
 
     return (
         <SearchBlockWrapper
@@ -63,6 +83,8 @@ const TemplateListingSearchHeader = (
         >
             <FlexWrapper align="center">
                 <Input
+                    value={searchValue}
+                    onChange={onSearchChange}
                     width="260px"
                     placeholder="Search template"
                     childNode={
@@ -87,22 +109,22 @@ const TemplateListingSearchHeader = (
                     Sort by:
                 </Span>
                 <Select
-                    options={[]}
-                    value=""
-                    onChange={props.onTemplateCategoryChange}
+                    options={templatesCategoryOptions}
+                    value={templateCategory}
+                    onChange={onCategoryChange}
                     onBorderLabel="Category"
                 />
                 <Select
-                    options={[]}
-                    value=""
-                    onChange={noop}
-                    onBorderLabel="label"
+                    options={sortOptions}
+                    value={nameSortKey}
+                    onChange={onNameSortChange}
+                    onBorderLabel="Order"
                 />
                 <Select
-                    options={[]}
-                    value=""
-                    onChange={noop}
-                    onBorderLabel="label"
+                    options={sortOptions}
+                    value={dateSortKey}
+                    onChange={onDateSortChange}
+                    onBorderLabel="Date"
                 />
             </SortKeysWrapper>
         </SearchBlockWrapper>

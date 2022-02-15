@@ -1,18 +1,23 @@
-import { FlexWrapper } from "../../components/wrappers";
-import { H2, Span } from "../../components/typography";
-import { TemplateCategory } from "../../lib/types";
+import { fetchAllTemplates } from "../../store/slices/allTemplates";
+import { FlexWrapper, IconWrapper } from "../../components/wrappers";
+import { getPageEndIndex, getPageStartIndex, usePageItems } from "../../lib/utils/pagination";
+import { H2, P, Span } from "../../components/typography";
+import { isEmpty } from "../../lib/validations"
+import { ITemplate } from "../../lib/types";
 import { templateListingCallout } from "../../static/text";
-import { Templates } from "../../templates";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { useFilterTemplatesByName } from "../../lib/utils/filter/templates";
 import Colors from "../../lib/colors";
 import NotificationCard from "../../components/notificationCard";
-import React, { ChangeEvent, useState } from "react";
+import Pagination from "../../components/pagination";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import TemplateListingGrid from "../../components/templateListingGrid";
 import TemplateListingSearchHeader from "../../components/templateListingSearchBlock";
 
 export const ScreenWraper = styled.main`
     width: 100%;
-    margin: 40px 0;
+    margin: 20px 0 20px;
     padding-left: 1rem;
     padding-right: 1rem;
 
@@ -43,21 +48,47 @@ export const ScreenWraper = styled.main`
 `;
 
 const TemplateListing = () => {
+    const dispatch = useAppDispatch()
 
-    const [templateCategory, setTemplateCategory] = useState(TemplateCategory.ALL);
-    const [templates] = useState([])
+    useEffect(() => {
+        let isMounted = true
+        if (isMounted) {
+            dispatch(fetchAllTemplates())
+        }
 
-    const onTemplateCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const { value } = event.target
-        setTemplateCategory(value as TemplateCategory)
-    }
+        return () => { isMounted = false }
+    }, [fetchAllTemplates])
+
+    const {
+        allTemplates: {
+            templates,
+            categorisedTemplates,
+            fetchingTemplates,
+            fetchTemplatesError,
+        },
+        templatesPagination: {
+            pageSize,
+            currentPageIndex,
+        },
+        templatesCategory: { category: templateCategory },
+        templateSearch: { searchValue },
+    } = useAppSelector(state => state)
+
+    const [searchedTemplates] = useFilterTemplatesByName({
+        list: categorisedTemplates,
+        name: searchValue,
+    })
+
+    const [pageItems] = usePageItems<ITemplate>({
+        startIndex: getPageStartIndex({ pageSize, currentPageIndex }),
+        endIndex:   getPageEndIndex({ pageSize, currentPageIndex }),
+        list:       searchedTemplates,
+    })
 
     return (
         <ScreenWraper>
-            <TemplateListingSearchHeader
-                onTemplateCategoryChange={onTemplateCategoryChange}
-            />
-            <FlexWrapper width="100%" Py="38px">
+            <TemplateListingSearchHeader />
+            <FlexWrapper width="100%" Py="18px">
                 <NotificationCard
                     text={templateListingCallout}
                 />
@@ -73,12 +104,12 @@ const TemplateListing = () => {
                     fontSizeSm="1rem"
                     fontWeight="400"
                 >
-                    {templateCategory}
+                    {`${templateCategory} Templates`}
                 </H2>
                 <Span
                     colour={Colors.GreyText}
                 >
-                    {`${templates.length} templates`}
+                    {`${searchedTemplates.length} templates`}
                 </Span>
             </FlexWrapper>
 
@@ -86,11 +117,52 @@ const TemplateListing = () => {
                 width="100%"
                 height="100vh"
                 overflowY="auto"
-                Py="28px"
+                Py="18px"
                 className="base-scroll"
             >
-                <TemplateListingGrid templates={Templates}/>
+                {
+                    fetchingTemplates
+                        ? (
+                            <FlexWrapper width="100%" justify="center">
+                                <IconWrapper fontSize="3rem" color={Colors.Primary}>
+                                    <i className="fas fa-spinner fa-spin" />
+                                </IconWrapper>
+                            </FlexWrapper>
+                        )
+                        : !isEmpty(fetchTemplatesError)
+                            ? (
+                                <FlexWrapper width="100%" justify="center" Py="18px">
+                                    <P color={Colors.Danger}>
+                                        {fetchTemplatesError}
+                                    </P>
+                                </FlexWrapper>
+                            )
+                            : templates.length
+                                ? pageItems
+                                    ? (
+                                        <TemplateListingGrid templates={pageItems} />
+                                    ) :
+                                    (
+                                        <FlexWrapper width="100%" justify="center" Py="18px">
+                                            <P
+                                                color={Colors.GreyText}
+                                            >
+                                                Empty search results
+                                            </P>
+                                        </FlexWrapper>
+                                    )
+                                : (
+                                    <FlexWrapper width="100%" justify="center" Py="18px">
+                                        <P
+                                            color={Colors.GreyText}
+                                        >
+                                            No template record found
+                                        </P>
+                                    </FlexWrapper>
+                                )
+                }
             </FlexWrapper>
+            <Pagination />
         </ScreenWraper>
     )
 }
