@@ -50,20 +50,20 @@ const Pagination = () => {
         name: searchValue,
     })
 
-    const pageNumber = getPageNumber(currentPageIndex)
     const totalPages = getTotalPages(searchedTemplates.length, pageSize)
+    const pageNumber = getPageNumber(currentPageIndex, totalPages)
 
     const onNextPage = () => {
         if (currentPageIndex < totalPages - pageNumberToIndexOffset) {
-            const prevCount = 1
-            dispatch(setCurrentPageIndex(currentPageIndex + prevCount))
+            const increament = 1
+            dispatch(setCurrentPageIndex(currentPageIndex + increament))
         }
     }
 
     const onPrevPage = () => {
         if (currentPageIndex) {
-            const prevCount = 1
-            dispatch(setCurrentPageIndex(currentPageIndex - prevCount))
+            const decreament = 1
+            dispatch(setCurrentPageIndex(currentPageIndex - decreament))
         }
     }
 
@@ -73,7 +73,7 @@ const Pagination = () => {
             align="center"
             justify="space-between"
             Px="16px"
-            Py="18px"
+            Py="28px"
         >
             <PaginationNavWrapper
                 disabled={!currentPageIndex}

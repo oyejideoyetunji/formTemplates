@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { setTemplatesSearchValue } from "../templateSearch";
 import { TemplatesPaginationState } from "../../../lib/types";
 
 
@@ -16,6 +17,11 @@ const templatesPaginationSlice = createSlice({
         setCurrentPageIndex: (state, action: PayloadAction<number>) => {
             state.currentPageIndex = action.payload
         },
+    },
+    extraReducers: builder => {
+        builder.addCase(setTemplatesSearchValue, state => {
+            state.currentPageIndex = 0
+        })
     },
 })
 

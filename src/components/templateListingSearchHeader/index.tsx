@@ -16,43 +16,46 @@ import styled from "styled-components";
 const SearchBlockWrapper = styled(FlexWrapper)`
     flex-direction: column;
 
-    @media only screen and (min-width: 860px) {
+    @media only screen and (min-width: 1024px) {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
     }
 `;
 
+const SortColumnWrapper = styled(FlexWrapper)`
+    flex-direction: column;
+
+    @media only screen and (min-width: 768px) {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    @media only screen and (min-width: 1024px) {
+        justify-content: flex-end;
+    }
+`;
+
 const SortKeysWrapper = styled(FlexWrapper)`
     flex-wrap: wrap;
 
-    > span {
-        display: none;
-        padding-right: 16px;
-    }
-
-    > *:not(span) {
-        padding-right: 6px;
+    > *{
         margin: 8px 0;
-        width: 120px;
+        width: 150px;
+        padding-right: 6px;
     }
 
     @media only screen and (min-width: 768px) {
         flex-wrap: nowrap;
+        padding-left: 12px;
 
-        > *:not(span) {
-            width: 150px;
+        > :last-child {
+            padding-right: 0;
         }
-
-        > span {
-            display: inline-block;
-        }
-    }
-
-    @media only screen and (min-width: 860px) {
-        justify-content: flex-end;
     }
 `;
+
+
 
 const TemplateListingSearchHeader = () => {
     const dispatch = useAppDispatch()
@@ -81,50 +84,50 @@ const TemplateListingSearchHeader = () => {
         <SearchBlockWrapper
             width="100%"
         >
-            <FlexWrapper align="center">
-                <Input
-                    value={searchValue}
-                    onChange={onSearchChange}
-                    width="260px"
-                    placeholder="Search template"
-                    childNode={
-                        <FlexWrapper width="30px" justify="flex-end">
-                            <IconWrapper
-                                fontWeight="300" fontSize="15px"
-                                color={Colors.GreyText}
-                            >
-                                <i className="fas fa-search" />
-                            </IconWrapper>
-                        </FlexWrapper>
-                    }
-                    childNodeWidth="30px"
-                    childNodeTop="9px"
-                    childNodeRight="8px"
-                />
-            </FlexWrapper>
-            <SortKeysWrapper Py="24px" align="center">
+            <Input
+                value={searchValue}
+                onChange={onSearchChange}
+                width="260px"
+                placeholder="Search template"
+                childNode={
+                    <FlexWrapper width="30px" justify="flex-end">
+                        <IconWrapper
+                            fontWeight="300" fontSize="15px"
+                            color={Colors.GreyText}
+                        >
+                            <i className="fas fa-search" />
+                        </IconWrapper>
+                    </FlexWrapper>
+                }
+                childNodeWidth="30px"
+                childNodeTop="9px"
+                childNodeRight="8px"
+            />
+            <SortColumnWrapper Py="24px">
                 <Span colour={Colors.GreyText} fontSize="14px" fontWeight="300">
                     Sort by:
                 </Span>
-                <Select
-                    options={templatesCategoryOptions}
-                    value={templateCategory}
-                    onChange={onCategoryChange}
-                    onBorderLabel="Category"
-                />
-                <Select
-                    options={sortOptions}
-                    value={nameSortKey}
-                    onChange={onNameSortChange}
-                    onBorderLabel="Order"
-                />
-                <Select
-                    options={sortOptions}
-                    value={dateSortKey}
-                    onChange={onDateSortChange}
-                    onBorderLabel="Date"
-                />
-            </SortKeysWrapper>
+                <SortKeysWrapper align="center" Py="8px">
+                    <Select
+                        options={templatesCategoryOptions}
+                        value={templateCategory}
+                        onChange={onCategoryChange}
+                        onBorderLabel="Category"
+                    />
+                    <Select
+                        options={sortOptions}
+                        value={nameSortKey}
+                        onChange={onNameSortChange}
+                        onBorderLabel="Order"
+                    />
+                    <Select
+                        options={sortOptions}
+                        value={dateSortKey}
+                        onChange={onDateSortChange}
+                        onBorderLabel="Date"
+                    />
+                </SortKeysWrapper>
+            </SortColumnWrapper>
         </SearchBlockWrapper>
     )
 }

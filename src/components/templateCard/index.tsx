@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 export const CardWrapper = styled.div`
     width: 90%;
-    padding: 12px 18px;
+    padding: 16px 18px 50px;
     height: 250px;
     border-radius: 2px;
     background: #FFFFFF;
@@ -37,7 +37,8 @@ const TemplateCard = ({ template }: TemplateCardProps) => (
             {template?.name}
         </CardHeader>
         <FlexWrapper
-            Py="8px"
+            Py="12px"
+            flexWrap="wrap"
         >
             <P
                 fontSize="15px"
@@ -50,11 +51,11 @@ const TemplateCard = ({ template }: TemplateCardProps) => (
 
         <PositionWrapper
             bg={Colors.lightGreyBackground}
-            width="calc(100% - 36px)"
-            bottom="12px"
-            left="18px"
-            Px="8px"
-            Py="4px"
+            width="100%"
+            bottom="0"
+            left="0"
+            Px="18px"
+            Py="12px"
         >
             <a href={template?.link} target={"_blank"} rel="noreferrer">
                 <Span

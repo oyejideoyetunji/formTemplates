@@ -6,7 +6,8 @@ interface GetPageItemsProps<T>{startIndex: number, endIndex: number, list: T[]}
 
 
 
-export const getPageNumber = (index: number) => index + pageNumberToIndexOffset
+export const getPageNumber = (index: number, totalPages: number) =>
+    totalPages && index + pageNumberToIndexOffset
 
 export const getTotalPages = (listSize: number, pageSize: number) =>
     Math.ceil(listSize / pageSize)

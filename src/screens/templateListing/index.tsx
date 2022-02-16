@@ -1,7 +1,7 @@
 import { fetchAllTemplates } from "../../store/slices/allTemplates";
 import { FlexWrapper, IconWrapper } from "../../components/wrappers";
 import { getPageEndIndex, getPageStartIndex, usePageItems } from "../../lib/utils/pagination";
-import { H2, P, Span } from "../../components/typography";
+import { H2, P } from "../../components/typography";
 import { isEmpty } from "../../lib/validations"
 import { ITemplate } from "../../lib/types";
 import { templateListingCallout } from "../../static/text";
@@ -17,13 +17,11 @@ import TemplateListingSearchHeader from "../../components/templateListingSearchH
 
 export const ScreenWraper = styled.main`
     width: 100%;
-    margin: 20px 0 20px;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 30px 14px;
 
     > * {
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
 
         @media only screen and (min-width: 768px) {
             padding-left: 1.5rem;
@@ -88,7 +86,7 @@ const TemplateListing = () => {
     return (
         <ScreenWraper>
             <TemplateListingSearchHeader />
-            <FlexWrapper width="100%" Py="18px">
+            <FlexWrapper width="100%" Py="18px" Px="0">
                 <NotificationCard
                     text={templateListingCallout}
                 />
@@ -106,11 +104,14 @@ const TemplateListing = () => {
                 >
                     {`${templateCategory} Templates`}
                 </H2>
-                <Span
+                <H2
+                    fontSize="1rem"
+                    fontSizeSm="0.8rem"
+                    fontWeight="300"
                     colour={Colors.GreyText}
                 >
                     {`${searchedTemplates.length} templates`}
-                </Span>
+                </H2>
             </FlexWrapper>
 
             <FlexWrapper
